@@ -1,0 +1,81 @@
+Enter password: **********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.39 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2024, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE USER 'XimenaC'@'biomedhost' IDENTIFIED BY 'Castro1410';
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> GRANT ALL PRIVILEGES ON *.* TO 'XimenaC'@'biomedhost' WITH GRANT OPTION;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| base_de_datos      |
+| biomedica          |
+| ejemplo_1          |
+| empresa            |
+| gestion_equipos    |
+| gestion_pacientes  |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| world              |
++--------------------+
+12 rows in set (0.07 sec)
+
+mysql> CREAT DATABASE gestion_biomed;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'CREAT DATABASE gestion_biomed' at line 1
+mysql> CREATE DATABASE gestion_biomed;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> CREATE TABLE departamentos (
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> nombre VARCHAR(50) NOT NULL,
+    -> num_empleados INT(100),
+    -> ubicacion VARCHAR(50)
+    -> );
+ERROR 1046 (3D000): No database selected
+mysql> USE DATABASE gestion_biomed;
+ERROR 1049 (42000): Unknown database 'database'
+mysql> USE gestion_biomed;
+Database changed
+mysql> CREATE TABLE departamentos (
+    ->     -> id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     -> nombre VARCHAR(50) NOT NULL,
+    ->     -> num_empleados INT(100),
+    ->     -> ubicacion VARCHAR(50)
+    ->     -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> nombre VARCHAR(50) NOT NULL,
+    ->' at line 2
+mysql> CREATE TABLE departamentos (
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> nombre VARCHAR(50) NOT NULL,
+    -> num_empleados INT(100),
+    -> ubicacion VARCHAR(50)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.05 sec)
+
+mysql> CREATE TABLE usuarios (
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    ->   nombre VARCHAR(50) NOT NULL,
+    ->   correo VARCHAR(100) NOT NULL,
+    -> departamento_id INT,
+    ->   FOREIGN KEY (departamento_id) REFERENCES departamentos(id)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql>
