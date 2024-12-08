@@ -1,6 +1,6 @@
 Enter password: **********
 Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 8
+Your MySQL connection id is 9
 Server version: 8.0.39 MySQL Community Server - GPL
 
 Copyright (c) 2000, 2024, Oracle and/or its affiliates.
@@ -11,70 +11,317 @@ owners.
 
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-mysql> CREATE USER 'XimenaC'@'biomedhost' IDENTIFIED BY 'Castro1410';
-Query OK, 0 rows affected (0.13 sec)
+mysql> CREATE DATABASE gestion_biomedica;
+Query OK, 1 row affected (0.04 sec)
 
-mysql> GRANT ALL PRIVILEGES ON *.* TO 'XimenaC'@'biomedhost' WITH GRANT OPTION;
+mysql> CREATE USER 'biomedico_user'@'localhost' IDENTIFIED BY 'CACC041014MBCSSLA3!';
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> GRANT ALL PRIVILEGES ON gestion_biomedica.* TO 'biomedico_user'@'localhost';
 Query OK, 0 rows affected (0.01 sec)
 
-mysql> SHOW DATABASES;
-+--------------------+
-| Database           |
-+--------------------+
-| base_de_datos      |
-| biomedica          |
-| ejemplo_1          |
-| empresa            |
-| gestion_equipos    |
-| gestion_pacientes  |
-| information_schema |
-| mysql              |
-| performance_schema |
-| sakila             |
-| sys                |
-| world              |
-+--------------------+
-12 rows in set (0.07 sec)
+mysql> FLUSH PRIVILEGES;
+Query OK, 0 rows affected (0.02 sec)
 
-mysql> CREAT DATABASE gestion_biomed;
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'CREAT DATABASE gestion_biomed' at line 1
-mysql> CREATE DATABASE gestion_biomed;
+mysql> CREATE DATABASE gestion_biomedica;
+ERROR 1007 (HY000): Can't create database 'gestion_biomedica'; database exists
+mysql> DROP gestion_biomedica;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'gestion_biomedica' at line 1
+mysql> DROP DATABASE gestion_biomedica;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE DATABASE gestion_biomedica;
 Query OK, 1 row affected (0.01 sec)
 
 mysql> CREATE TABLE departamentos (
     -> id INT AUTO_INCREMENT PRIMARY KEY,
     -> nombre VARCHAR(50) NOT NULL,
-    -> num_empleados INT(100),
+    -> num_medicos INT(100),
     -> ubicacion VARCHAR(50)
     -> );
 ERROR 1046 (3D000): No database selected
-mysql> USE DATABASE gestion_biomed;
-ERROR 1049 (42000): Unknown database 'database'
-mysql> USE gestion_biomed;
+mysql> USE gestion_biomedica;
 Database changed
-mysql> CREATE TABLE departamentos (
-    ->     -> id INT AUTO_INCREMENT PRIMARY KEY,
-    ->     -> nombre VARCHAR(50) NOT NULL,
-    ->     -> num_empleados INT(100),
-    ->     -> ubicacion VARCHAR(50)
-    ->     -> );
-ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-> id INT AUTO_INCREMENT PRIMARY KEY,
-    -> nombre VARCHAR(50) NOT NULL,
-    ->' at line 2
 mysql> CREATE TABLE departamentos (
     -> id INT AUTO_INCREMENT PRIMARY KEY,
     -> nombre VARCHAR(50) NOT NULL,
-    -> num_empleados INT(100),
+    -> num_medicos INT(100),
     -> ubicacion VARCHAR(50)
     -> );
-Query OK, 0 rows affected, 1 warning (0.05 sec)
+Query OK, 0 rows affected, 1 warning (0.12 sec)
+
+mysql> CREATE TABLE medicos (
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> nombre VARCHAR(50) NOT NULL,
+    -> especialidad VARCHAR(50) NOT NULL,
+    -> departamento_id INT,
+    -> FOREIGN KEY (departamento_id) REFERENCES departamentos(id)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO departamentos (nombre, num_medicos, ubicacion) VALUES ('Dr. Carlos Vera');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO departamentos (nombre, num_medicos, ubicacion) VALUES ('Cardiología', 3, 'Tercer piso - Seccion Azul');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO departamentos (nombre, num_medicos, ubicacion) VALUES ('Medicina General', 8, 'Primer piso');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO departamentos (nombre, num_medicos, ubicacion) VALUES ('Odontología', 4, 'Segundo piso - Seccion verde menta');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO departamentos (nombre, num_medicos, ubicacion) VALUES ('Ginecología', 2, 'Segundo piso - Seccion rosa');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO departamentos (nombre, num_medicos, ubicacion) VALUES ('Neumología', 1, 'Tercer piso - Seccion morado');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM departamentos;
++----+------------------+-------------+------------------------------------+
+| id | nombre           | num_medicos | ubicacion                          |
++----+------------------+-------------+------------------------------------+
+|  1 | Cardiología      |           3 | Tercer piso - Seccion Azul         |
+|  2 | Medicina General |           8 | Primer piso                        |
+|  3 | Odontología      |           4 | Segundo piso - Seccion verde menta |
+|  4 | Ginecología      |           2 | Segundo piso - Seccion rosa        |
+|  5 | Neumología       |           1 | Tercer piso - Seccion morado       |
++----+------------------+-------------+------------------------------------+
+5 rows in set (0.02 sec)
+
+mysql> INSERT INTO medicos (nombre, especialidad, departamento_id) VALUES ('Dr. Carlos Vera', 'Medicina General', 2);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> INSERT INTO medicos (nombre, especialidad, departamento_id) VALUES ('Dr. Julio Ceasar', 'Medicina General', 2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO medicos (nombre, especialidad, departamento_id) VALUES ('Dr. Berta Ramírez', 'Cardiología', 1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO medicos (nombre, especialidad, departamento_id) VALUES ('Dr. Lupita Villa', 'Cardiología', 1);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO medicos (nombre, especialidad, departamento_id) VALUES ('Dr. Luna Perez', 'Medicina General', 2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO medicos (nombre, especialidad, departamento_id) VALUES ('Dr. Lucia Castro', 'Medicina General', 2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO medicos (nombre, especialidad, departamento_id) VALUES ('Dr. Gabriela Sanz', 'Odontología', 3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO medicos (nombre, especialidad, departamento_id) VALUES ('Dr. Kassandra Quezada', 'Odontología', 3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO medicos (nombre, especialidad, departamento_id) VALUES ('Dr. Sonia Peréz', 'Ginecología', 4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO medicos (nombre, especialidad, departamento_id) VALUES ('Dr. Linda Pinal', 'Ginecología', 4);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO medicos (nombre, especialidad, departamento_id) VALUES ('Dr. Silvia López', 'Neumología', 5);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO medicos (nombre, especialidad, departamento_id) VALUES ('Dr. Juan Martínez', 'Neumología', 5);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT medicos.nombre, medicos.especialidad, departamentos.nombre AS departamento
+    -> FROM medicos
+    -> JOIN departamentos ON medicos.departamento_id = departamentos.id;
++-----------------------+------------------+------------------+
+| nombre                | especialidad     | departamento     |
++-----------------------+------------------+------------------+
+| Dr. Berta Ramírez     | Cardiología      | Cardiología      |
+| Dr. Lupita Villa      | Cardiología      | Cardiología      |
+| Dr. Carlos Vera       | Medicina General | Medicina General |
+| Dr. Julio Ceasar      | Medicina General | Medicina General |
+| Dr. Luna Perez        | Medicina General | Medicina General |
+| Dr. Lucia Castro      | Medicina General | Medicina General |
+| Dr. Gabriela Sanz     | Odontología      | Odontología      |
+| Dr. Kassandra Quezada | Odontología      | Odontología      |
+| Dr. Sonia Peréz       | Ginecología      | Ginecología      |
+| Dr. Linda Pinal       | Ginecología      | Ginecología      |
+| Dr. Silvia López      | Neumología       | Neumología       |
+| Dr. Juan Martínez     | Neumología       | Neumología       |
++-----------------------+------------------+------------------+
+12 rows in set (0.02 sec)
+
+mysql> SELECT medicos.nombre, medicos.especialidad, departamentos.ubicacion AS departamento
+    -> FROM medicos
+    -> JOIN departamentos ON medicos.departamento_id = departamentos.id;
++-----------------------+------------------+------------------------------------+
+| nombre                | especialidad     | departamento                       |
++-----------------------+------------------+------------------------------------+
+| Dr. Berta Ramírez     | Cardiología      | Tercer piso - Seccion Azul         |
+| Dr. Lupita Villa      | Cardiología      | Tercer piso - Seccion Azul         |
+| Dr. Carlos Vera       | Medicina General | Primer piso                        |
+| Dr. Julio Ceasar      | Medicina General | Primer piso                        |
+| Dr. Luna Perez        | Medicina General | Primer piso                        |
+| Dr. Lucia Castro      | Medicina General | Primer piso                        |
+| Dr. Gabriela Sanz     | Odontología      | Segundo piso - Seccion verde menta |
+| Dr. Kassandra Quezada | Odontología      | Segundo piso - Seccion verde menta |
+| Dr. Sonia Peréz       | Ginecología      | Segundo piso - Seccion rosa        |
+| Dr. Linda Pinal       | Ginecología      | Segundo piso - Seccion rosa        |
+| Dr. Silvia López      | Neumología       | Tercer piso - Seccion morado       |
+| Dr. Juan Martínez     | Neumología       | Tercer piso - Seccion morado       |
++-----------------------+------------------+------------------------------------+
+12 rows in set (0.00 sec)
+
+mysql> CREATE VIEW vista_medicos_departamentos AS
+    -> SELECT medicos.nombre, medicos.especialidad, departamentos.ubicacion AS departamento
+    -> FROM medicos
+    -> JOIN departamentos ON medicos.departamento_id = departamentos.id;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> SELECT * FROM vista_medicos_departamentos;
++-----------------------+------------------+------------------------------------+
+| nombre                | especialidad     | departamento                       |
++-----------------------+------------------+------------------------------------+
+| Dr. Berta Ramírez     | Cardiología      | Tercer piso - Seccion Azul         |
+| Dr. Lupita Villa      | Cardiología      | Tercer piso - Seccion Azul         |
+| Dr. Carlos Vera       | Medicina General | Primer piso                        |
+| Dr. Julio Ceasar      | Medicina General | Primer piso                        |
+| Dr. Luna Perez        | Medicina General | Primer piso                        |
+| Dr. Lucia Castro      | Medicina General | Primer piso                        |
+| Dr. Gabriela Sanz     | Odontología      | Segundo piso - Seccion verde menta |
+| Dr. Kassandra Quezada | Odontología      | Segundo piso - Seccion verde menta |
+| Dr. Sonia Peréz       | Ginecología      | Segundo piso - Seccion rosa        |
+| Dr. Linda Pinal       | Ginecología      | Segundo piso - Seccion rosa        |
+| Dr. Silvia López      | Neumología       | Tercer piso - Seccion morado       |
+| Dr. Juan Martínez     | Neumología       | Tercer piso - Seccion morado       |
++-----------------------+------------------+------------------------------------+
+12 rows in set (0.01 sec)
+
+mysql> CREATE TABLE role (
+    -> nombre VARCHAR(50),
+    -> tipo_role VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> INSERT INTO role (nombre, tipo_role) VALUES ('admin', 'admin');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO role (nombre, tipo_role) VALUES ('medico', 'medico');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO role (nombre, tipo_role) VALUES ('enfermero', 'enfermero');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM role;
++-----------+-----------+
+| nombre    | tipo_role |
++-----------+-----------+
+| admin     | admin     |
+| medico    | medico    |
+| enfermero | enfermero |
++-----------+-----------+
+3 rows in set (0.00 sec)
 
 mysql> CREATE TABLE usuarios (
     -> id INT AUTO_INCREMENT PRIMARY KEY,
-    ->   nombre VARCHAR(50) NOT NULL,
-    ->   correo VARCHAR(100) NOT NULL,
-    -> departamento_id INT,
-    ->   FOREIGN KEY (departamento_id) REFERENCES departamentos(id)
+    -> nombre VARCHAR (50),
+    -> correo VARCHAR (100),
+    -> contraseña VARCHAR (50),
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 6
+mysql> CREATE TABLE usuarios (
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> nombre VARCHAR (50) UNIQUE,
+    -> correo VARCHAR (100),
+    -> contraseña_hash VARCHAR (50)
+    -> tipo_role VARCHAR(50)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'tipo_role VARCHAR(50)
+)' at line 6
+mysql> CREATE TABLE usuarios (
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> nombre VARCHAR (50) UNIQUE,
+    -> correo VARCHAR (100),
+    -> contraseña_hash VARCHAR (50)
+    -> tipo_usuario VARCHAR(50)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'tipo_usuario VARCHAR(50)
+)' at line 6
+mysql> CREATE TABLE usuarios (
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> nombre VARCHAR (50) UNIQUE,
+    -> correo VARCHAR (100),
+    -> contraseña_hash VARCHAR (50)
+    -> tipo_role VARCHAR (50)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'tipo_role VARCHAR (50)
+)' at line 6
+mysql> CREATE TABLE usuarios (
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> nombre VARCHAR (50) UNIQUE,
+    -> correo VARCHAR (100),
+    -> contraseña_hash VARCHAR (50),
+    -> tipo_role VARCHAR (50)
+    -> );
+Query OK, 0 rows affected (0.19 sec)
+
+mysql> DROP TABLE usuarios;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> DROP TABLE role;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> SHOW TABLES;
++-----------------------------+
+| Tables_in_gestion_biomedica |
++-----------------------------+
+| departamentos               |
+| medicos                     |
+| vista_medicos_departamentos |
++-----------------------------+
+3 rows in set (0.05 sec)
+
+mysql> CREATE TABLE codigos_acceso (
+    -> codigo VARCHAR (50),
+    -> tipo_usuario VARCHAR (50)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO codigos_acceso (codigo, tipo_usuario) VALUES ('admin', 'admin');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO codigos_acceso (codigo, tipo_usuario) VALUES ('medico', 'medico');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO codigos_acceso (codigo, tipo_usuario) VALUES ('enfermero', 'enfermero');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM codigos_acceso;
++-----------+--------------+
+| codigo    | tipo_usuario |
++-----------+--------------+
+| admin     | admin        |
+| medico    | medico       |
+| enfermero | enfermero    |
++-----------+--------------+
+3 rows in set (0.01 sec)
+
+mysql> CREATE TABLE usuarios (
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> nombre_usuario VARCHAR (50),
+    -> password_hash VARCHAR (100),
+    -> tipo_usuarios VARCHAR (50),
+    -> correo VARCHAR (100)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> SELECT * FROM codigos_acceso WHERE codigo = 'admin';
++--------+--------------+
+| codigo | tipo_usuario |
++--------+--------------+
+| admin  | admin        |
++--------+--------------+
+1 row in set (0.00 sec)
+
+mysql> CREATE TABLE equipos (
+    -> nombre VARCHAR (50),
+    -> descripcion VARCHAR (100),
+    -> departamento VARCHAR (50),
+    -> estado VARCHAR (50)
     -> );
 Query OK, 0 rows affected (0.06 sec)
 
