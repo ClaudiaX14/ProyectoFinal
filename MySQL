@@ -326,3 +326,177 @@ mysql> CREATE TABLE equipos (
 Query OK, 0 rows affected (0.06 sec)
 
 mysql>
+mysql> SELECT * FROM departamentos;
++----+------------------+-------------+------------------------------------+
+| id | nombre           | num_medicos | ubicacion                          |
++----+------------------+-------------+------------------------------------+
+|  1 | Cardiología      |           3 | Tercer piso - Seccion Azul         |
+|  2 | Medicina General |           8 | Primer piso                        |
+|  3 | Odontología      |           4 | Segundo piso - Seccion verde menta |
+|  4 | Ginecología      |           2 | Segundo piso - Seccion rosa        |
+|  5 | Neumología       |           1 | Tercer piso - Seccion morado       |
++----+------------------+-------------+------------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM medicos;
++----+-----------------------+------------------+-----------------+
+| id | nombre                | especialidad     | departamento_id |
++----+-----------------------+------------------+-----------------+
+|  1 | Dr. Carlos Vera       | Medicina General |               2 |
+|  2 | Dr. Julio Ceasar      | Medicina General |               2 |
+|  3 | Dr. Berta Ramírez     | Cardiología      |               1 |
+|  4 | Dr. Lupita Villa      | Cardiología      |               1 |
+|  5 | Dr. Luna Perez        | Medicina General |               2 |
+|  6 | Dr. Lucia Castro      | Medicina General |               2 |
+|  7 | Dr. Gabriela Sanz     | Odontología      |               3 |
+|  8 | Dr. Kassandra Quezada | Odontología      |               3 |
+|  9 | Dr. Sonia Peréz       | Ginecología      |               4 |
+| 10 | Dr. Linda Pinal       | Ginecología      |               4 |
+| 11 | Dr. Silvia López      | Neumología       |               5 |
+| 12 | Dr. Juan Martínez     | Neumología       |               5 |
++----+-----------------------+------------------+-----------------+
+12 rows in set (0.00 sec)
+
+mysql> SELECT departamentos.nombre, COUNT(medicos.id) AS num_empleados
+    -> FROM medicos
+    -> JOIN departamentos ON medicos.departamento_id = departamentos.id
+    -> GROUP BY departamentos.nombre;
++------------------+---------------+
+| nombre           | num_empleados |
++------------------+---------------+
+| Cardiología      |             2 |
+| Medicina General |             4 |
+| Odontología      |             2 |
+| Ginecología      |             2 |
+| Neumología       |             2 |
++------------------+---------------+
+5 rows in set (0.01 sec)
+
+mysql> DESCRIBE equipos;
++--------------+--------------+------+-----+---------+-------+
+| Field        | Type         | Null | Key | Default | Extra |
++--------------+--------------+------+-----+---------+-------+
+| nombre       | varchar(50)  | YES  |     | NULL    |       |
+| descripcion  | varchar(100) | YES  |     | NULL    |       |
+| departamento | varchar(50)  | YES  |     | NULL    |       |
+| estado       | varchar(50)  | YES  |     | NULL    |       |
++--------------+--------------+------+-----+---------+-------+
+4 rows in set (0.08 sec)
+
+mysql> SELECT * FROM medicos;
++----+-----------------------+------------------+-----------------+
+| id | nombre                | especialidad     | departamento_id |
++----+-----------------------+------------------+-----------------+
+|  1 | Dr. Carlos Vera       | Medicina General |               2 |
+|  2 | Dr. Julio Ceasar      | Medicina General |               2 |
+|  3 | Dr. Berta Ramírez     | Cardiología      |               1 |
+|  4 | Dr. Lupita Villa      | Cardiología      |               1 |
+|  5 | Dr. Luna Perez        | Medicina General |               2 |
+|  6 | Dr. Lucia Castro      | Medicina General |               2 |
+|  7 | Dr. Gabriela Sanz     | Odontología      |               3 |
+|  8 | Dr. Kassandra Quezada | Odontología      |               3 |
+|  9 | Dr. Sonia Peréz       | Ginecología      |               4 |
+| 10 | Dr. Linda Pinal       | Ginecología      |               4 |
+| 11 | Dr. Silvia López      | Neumología       |               5 |
+| 12 | Dr. Juan Martínez     | Neumología       |               5 |
+| 13 | Dr. Gustavo Guzman    | Ginecólogo       |            NULL |
+| 14 | Dr. Gustavo Guzman    | Ginecólogo       |            NULL |
++----+-----------------------+------------------+-----------------+
+14 rows in set (0.00 sec)
+
+mysql> SELECT nombre, especialidad
+    -> FROM medicos
+    -> WHERE departamento_id IN (SELECT id FROM departamentos WHERE ubicacion = 'Segundo piso - Seccion verde menta');
++-----------------------+--------------+
+| nombre                | especialidad |
++-----------------------+--------------+
+| Dr. Gabriela Sanz     | Odontología  |
+| Dr. Kassandra Quezada | Odontología  |
++-----------------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT medicos.nombre, departamentos.ubicacion AS ubicacion
+    -> FROM medicos
+    -> JOIN departamentos ON medicos.departamento_id = departamentos.id
+    -> WHERE departamento_id IN (SELECT especialidad FROM medicos WHERE especialidad = 'Medicina General');
+Empty set (0.00 sec)
+
+mysql> SELECT medicos.nombre, departamentos.ubicacion AS ubicacion
+    -> FROM medicos
+    -> JOIN departamentos ON medicos.departamento_id = departamentos.id
+    -> WHERE departamento_id IN (SELECT id FROM medicos WHERE especialidad = 'Medicina General');
++-------------------+------------------------------+
+| nombre            | ubicacion                    |
++-------------------+------------------------------+
+| Dr. Berta Ramírez | Tercer piso - Seccion Azul   |
+| Dr. Lupita Villa  | Tercer piso - Seccion Azul   |
+| Dr. Carlos Vera   | Primer piso                  |
+| Dr. Julio Ceasar  | Primer piso                  |
+| Dr. Luna Perez    | Primer piso                  |
+| Dr. Lucia Castro  | Primer piso                  |
+| Dr. Silvia López  | Tercer piso - Seccion morado |
+| Dr. Juan Martínez | Tercer piso - Seccion morado |
++-------------------+------------------------------+
+8 rows in set (0.00 sec)
+
+mysql> SELECT medicos.nombre, departamentos.ubicacion AS ubicacion
+    -> FROM medicos
+    -> JOIN departamentos ON medicos.departamento_id = departamentos.id
+    -> WHERE departamento_id IN (SELECT id FROM medicos WHERE especialidad LIKE 'Medicina General');
++-------------------+------------------------------+
+| nombre            | ubicacion                    |
++-------------------+------------------------------+
+| Dr. Berta Ramírez | Tercer piso - Seccion Azul   |
+| Dr. Lupita Villa  | Tercer piso - Seccion Azul   |
+| Dr. Carlos Vera   | Primer piso                  |
+| Dr. Julio Ceasar  | Primer piso                  |
+| Dr. Luna Perez    | Primer piso                  |
+| Dr. Lucia Castro  | Primer piso                  |
+| Dr. Silvia López  | Tercer piso - Seccion morado |
+| Dr. Juan Martínez | Tercer piso - Seccion morado |
++-------------------+------------------------------+
+8 rows in set (0.01 sec)
+
+mysql> SELECT * FROM medicos;
++----+-----------------------+------------------+-----------------+
+| id | nombre                | especialidad     | departamento_id |
++----+-----------------------+------------------+-----------------+
+|  1 | Dr. Carlos Vera       | Medicina General |               2 |
+|  2 | Dr. Julio Ceasar      | Medicina General |               2 |
+|  3 | Dr. Berta Ramírez     | Cardiología      |               1 |
+|  4 | Dr. Lupita Villa      | Cardiología      |               1 |
+|  5 | Dr. Luna Perez        | Medicina General |               2 |
+|  6 | Dr. Lucia Castro      | Medicina General |               2 |
+|  7 | Dr. Gabriela Sanz     | Odontología      |               3 |
+|  8 | Dr. Kassandra Quezada | Odontología      |               3 |
+|  9 | Dr. Sonia Peréz       | Ginecología      |               4 |
+| 10 | Dr. Linda Pinal       | Ginecología      |               4 |
+| 11 | Dr. Silvia López      | Neumología       |               5 |
+| 12 | Dr. Juan Martínez     | Neumología       |               5 |
+| 13 | Dr. Gustavo Guzman    | Ginecólogo       |               4 |
++----+-----------------------+------------------+-----------------+
+13 rows in set (0.00 sec)
+
+mysql> SELECT * FROM equipos;
+Empty set (0.02 sec)
+
+mysql> SELECT * FROM equipos;
++-----------------------+-------------------+------------------+------------+
+| nombre                | descripcion       | departamento     | estado     |
++-----------------------+-------------------+------------------+------------+
+| Electrocardiograma    | Marca Jabil       | Cardiología      | Excelente  |
+| Camilla               | Marca desconocida | Medicina General | Regular    |
+| Torre de laparoscopia | Marca Hense       | Ginecología      | Excelente  |
+| Estetoscopio          | Marca desconocida | Medicina General | Deplorable |
++-----------------------+-------------------+------------------+------------+
+4 rows in set (0.01 sec)
+
+mysql> SELECT SUM(id) AS total_medicos FROM medicos WHERE especialidad = 'Medicina General';
++---------------+
+| total_medicos |
++---------------+
+|            14 |
++---------------+
+1 row in set (0.01 sec)
+
+mysql>
