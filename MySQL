@@ -696,4 +696,49 @@ mysql> CREATE TABLE equipos (
     -> );
 Query OK, 0 rows affected (0.06 sec)
 
-mysql>
+mysql>mysql> SELECT * FROM equipos;
++----+-----------------------+-------------------+------------------+----------+
+| id | nombre                | descripcion       | departamento     | precio   |
++----+-----------------------+-------------------+------------------+----------+
+|  1 | Electrocardiograma    | Marca Jabil       | Cardiología      |  1000.00 |
+|  2 | Camilla               | Marca desconocida | Medicina General | 13346.96 |
+|  3 | Electrocardiograma    | Marca Jabil       | Cardiología      |  1000.00 |
+|  4 | Camilla               | Marca desconocida | Medicina General | 13346.96 |
+|  5 | Electrocardiograma    | Marca Jabil       | Cardiología      |  1000.00 |
+|  6 | Camilla               | Marca desconocida | Medicina General | 13346.96 |
+|  7 | Electrocardiograma    | Marca Jabil       | Cardiología      |  1000.00 |
+|  8 | Camilla               | Marca desconocida | Medicina General | 13346.96 |
+|  9 | Torre de laparoscopia | Marca Hense       | Ginecología      | 40000.00 |
+| 10 | Estetoscopio          | Marca desconocida | Medicina General |   298.00 |
++----+-----------------------+-------------------+------------------+----------+
+10 rows in set (0.01 sec)
+
+mysql> CREATE TABLE citas (
+    -> nombre_doc VARCHAR (100),
+    -> causa VARCHAR (100),
+    -> fecha_programada DATE,
+    -> fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    -> FOREIGN KEY (departamento_id) REFERENCES departamentos(id)
+    -> );
+ERROR 1072 (42000): Key column 'departamento_id' doesn't exist in table
+mysql> CREATE TABLE citas (
+    -> nombre_doc VARCHAR (100),
+    -> causa VARCHAR (100),
+    -> fecha_programada DATE,
+    -> fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    -> departamento_id INT,
+    -> FOREIGN KEY (departamento_id) REFERENCES departamentos(id)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> CREATE VIEW vista_citas AS
+    -> SELECT citas.nombre_doc, citas.causa, citas.fecha_programada, departamentos.ubicacion AS ubicacion
+    -> FROM citas
+    -> JOIN departamentos ON medicos.departamento_id = departamentos.id;
+ERROR 1054 (42S22): Unknown column 'medicos.departamento_id' in 'on clause'
+mysql> CREATE VIEW vista_citas AS
+    -> SELECT citas.nombre_doc, citas.causa, citas.fecha_programada, departamentos.ubicacion AS ubicacion
+    -> FROM citas
+    -> JOIN departamentos ON citas.departamento_id = departamentos.id;
+Query OK, 0 rows affected (0.03 sec)
+
