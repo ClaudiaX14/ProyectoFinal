@@ -500,3 +500,200 @@ mysql> SELECT SUM(id) AS total_medicos FROM medicos WHERE especialidad = 'Medici
 1 row in set (0.01 sec)
 
 mysql>
+
+mysql> USE gestion_biomedica;
+Database changed
+mysql> SELECT * FROM medicos;
++----+-----------------------+------------------+-----------------+
+| id | nombre                | especialidad     | departamento_id |
++----+-----------------------+------------------+-----------------+
+|  1 | Dr. Carlos Vera       | Medicina General |               2 |
+|  2 | Dr. Julio Ceasar      | Medicina General |               2 |
+|  3 | Dr. Berta Ramírez     | Cardiología      |               1 |
+|  4 | Dr. Lupita Villa      | Cardiología      |               1 |
+|  5 | Dr. Luna Perez        | Medicina General |               2 |
+|  6 | Dr. Lucia Castro      | Medicina General |               2 |
+|  7 | Dr. Gabriela Sanz     | Odontología      |               3 |
+|  8 | Dr. Kassandra Quezada | Odontología      |               3 |
+|  9 | Dr. Sonia Peréz       | Ginecología      |               4 |
+| 10 | Dr. Linda Pinal       | Ginecología      |               4 |
+| 11 | Dr. Silvia López      | Neumología       |               5 |
+| 12 | Dr. Juan Martínez     | Neumología       |               5 |
+| 13 | Dr. Gustavo Guzman    | Ginecólogo       |               4 |
+| 16 | Dr. María Fernandez   | Cardiología      |               1 |
+| 17 | Dr. Gabriel Castro    | Odontología      |            NULL |
++----+-----------------------+------------------+-----------------+
+15 rows in set (0.00 sec)
+
+mysql> SELECT * FROM medicos;
++----+-----------------------+------------------+-----------------+
+| id | nombre                | especialidad     | departamento_id |
++----+-----------------------+------------------+-----------------+
+|  1 | Dr. Carlos Vera       | Medicina General |               2 |
+|  2 | Dr. Julio Ceasar      | Medicina General |               2 |
+|  3 | Dr. Berta Ramírez     | Cardiología      |               1 |
+|  4 | Dr. Lupita Villa      | Cardiología      |               1 |
+|  5 | Dr. Luna Perez        | Medicina General |               2 |
+|  6 | Dr. Lucia Castro      | Medicina General |               2 |
+|  7 | Dr. Gabriela Sanz     | Odontología      |               3 |
+|  8 | Dr. Kassandra Quezada | Odontología      |               3 |
+|  9 | Dr. Sonia Peréz       | Ginecología      |               4 |
+| 10 | Dr. Linda Pinal       | Ginecología      |               4 |
+| 11 | Dr. Silvia López      | Neumología       |               5 |
+| 12 | Dr. Juan Martínez     | Neumología       |               5 |
+| 13 | Dr. Gustavo Guzman    | Ginecólogo       |               4 |
+| 16 | Dr. María Fernandez   | Cardiología      |               1 |
+| 17 | Dr. Gabriel Castro    | Odontología      |               3 |
+| 18 | Dr. Alonso Briseño    | Odontología      |               3 |
++----+-----------------------+------------------+-----------------+
+16 rows in set (0.01 sec)
+
+mysql> SELECT * FROM departamentos;
++----+------------------+-------------+------------------------------------+
+| id | nombre           | num_medicos | ubicacion                          |
++----+------------------+-------------+------------------------------------+
+|  1 | Cardiología      |           3 | Tercer piso - Seccion Azul         |
+|  2 | Medicina General |           8 | Primer piso                        |
+|  3 | Odontología      |           4 | Segundo piso - Seccion verde menta |
+|  4 | Ginecología      |           2 | Segundo piso - Seccion rosa        |
+|  5 | Neumología       |           1 | Tercer piso - Seccion morado       |
++----+------------------+-------------+------------------------------------+
+5 rows in set (0.00 sec)
+
+mysql> DROP equipos;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'equipos' at line 1
+mysql> DROP TABLE equipos;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> SHOW TABLES;
++-----------------------------+
+| Tables_in_gestion_biomedica |
++-----------------------------+
+| codigos_acceso              |
+| departamentos               |
+| medicos                     |
+| usuarios                    |
+| vista_medicos_departamentos |
++-----------------------------+
+5 rows in set (0.06 sec)
+
+mysql> CREATE TABLE equipos (
+    -> id INT AUTO INCREMENT PRIMARY KEY,
+    -> nombre VARCHAR (100),
+    -> descripción VARCHAR (100),
+    -> departamento VARCHAR (100),
+    -> estado VARCHAR (50),
+    -> fecha_registro TIMESTAMP DEFAULT CURRENT TIMESTAMP
+    -> ,
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'AUTO INCREMENT PRIMARY KEY,
+nombre VARCHAR (100),
+descripción VARCHAR (100),
+de' at line 2
+mysql> CREATE TABLE equipos (
+    -> id INT AUTO INCREMENT PRIMARY KEY,
+    -> nombre VARCHAR (100),
+    -> descripción VARCHAR (100),
+    -> marca VARCHAR (50),
+    -> precio DECIMAL (10,10),
+    -> fecha_registro TIMESTAMP DEFAULT CURRENT TIMESTAMP
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'AUTO INCREMENT PRIMARY KEY,
+nombre VARCHAR (100),
+descripción VARCHAR (100),
+ma' at line 2
+mysql> CREATE TABLE equipos (
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> nombre VARCHAR (100),
+    -> marca VARCHAR (50),
+    -> estado VARCHAR (50),
+    -> precio DECIMAL (10,10),
+    -> fecha_registro TIMESTAMP DEFAULT CURRENT TIMESTAMP
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'CURRENT TIMESTAMP
+)' at line 7
+mysql> SET GLOBAL time_zone = '-08:00';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE equipos (
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> nombre VARCHAR (100),
+    -> marca VARCHAR (50),
+    -> estado VARCHAR (50),
+    -> precio DECIMAL (10,10),
+    -> fecha_registro TIMESTAMP DEFAULT CURRENT TIMESTAMP
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'CURRENT TIMESTAMP
+)' at line 7
+mysql> CREATE TABLE equipos (
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> nombre VARCHAR (100),
+    -> descripcion VARCHAR (50),
+    -> departamento VARCHAR (50),
+    -> estado VARCHAR (100),
+    -> precio DECIMAL (10,10)
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> SELECT * FROM equipos;
++----+-----------------------+-------------------+------------------+------------+--------+
+| id | nombre                | descripcion       | departamento     | estado     | precio |
++----+-----------------------+-------------------+------------------+------------+--------+
+|  1 | Electrocardiograma    | Marca Jabil       | Cardiología      | Excelente  |   NULL |
+|  2 | Camilla               | Marca desconocida | Medicina General | Regular    |   NULL |
+|  3 | Torre de laparoscopia | Marca Hense       | Ginecología      | Excelente  |   NULL |
+|  4 | Estetoscopio          | Marca desconocida | Medicina General | Deplorable |   NULL |
++----+-----------------------+-------------------+------------------+------------+--------+
+4 rows in set (0.01 sec)
+
+mysql> DELETE FROM equipo WHERE precio = NULL;
+ERROR 1146 (42S02): Table 'gestion_biomedica.equipo' doesn't exist
+mysql> DELETE FROM equipos WHERE precio = NULL;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM equipos;
++----+-----------------------+-------------------+------------------+------------+--------+
+| id | nombre                | descripcion       | departamento     | estado     | precio |
++----+-----------------------+-------------------+------------------+------------+--------+
+|  1 | Electrocardiograma    | Marca Jabil       | Cardiología      | Excelente  |   NULL |
+|  2 | Camilla               | Marca desconocida | Medicina General | Regular    |   NULL |
+|  3 | Torre de laparoscopia | Marca Hense       | Ginecología      | Excelente  |   NULL |
+|  4 | Estetoscopio          | Marca desconocida | Medicina General | Deplorable |   NULL |
++----+-----------------------+-------------------+------------------+------------+--------+
+4 rows in set (0.00 sec)
+
+mysql> DELETE FROM equipos WHERE estado = 'Excelente';
+Query OK, 2 rows affected (0.01 sec)
+
+mysql> SELECT * FROM equipos;
++----+--------------+-------------------+------------------+------------+--------+
+| id | nombre       | descripcion       | departamento     | estado     | precio |
++----+--------------+-------------------+------------------+------------+--------+
+|  2 | Camilla      | Marca desconocida | Medicina General | Regular    |   NULL |
+|  4 | Estetoscopio | Marca desconocida | Medicina General | Deplorable |   NULL |
++----+--------------+-------------------+------------------+------------+--------+
+2 rows in set (0.00 sec)
+
+mysql> DELETE FROM equipos WHERE estado = 'Regular';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> DELETE FROM equipos WHERE estado = 'Deplorable';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM equipos;
+Empty set (0.00 sec)
+
+mysql> DROP TABLE equipos;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> CREATE TABLE equipos (
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> nombre VARCHAR (100),
+    -> descripcion VARCHAR (50),
+    -> departamento VARCHAR (50),
+    -> estado VARCHAR (100),
+    -> precio DECIMAL (10,2)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql>
