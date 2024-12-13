@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Médicos - Hospital de Los Ángeles</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Registro de Médicos del Hospital de Los Ángeles</h1>
+  </header>
+
+  <main>
+    <section>
+      <h2>Registrar Nuevo Médico</h2>
+      <form action="/medicos" method="POST">
+        <div>
+          <label for="nombre">Nombre del médico:</label>
+          <input type="text" id="nombre" name="nombre" required>
+        </div>
+
+        <div>
+          <label for="especialidad">Especialidad:</label>
+          <input type="text" id="especialidad" name="especialidad" required>
+        </div>
+
+        <div>
+          <label for="departamento_id">Código de identificación de su departamento:</label>
+          <input type="number" id="departamento_id" name="departamento_id" required>
+        </div>
+
+        <div class="buttons">
+          <button type="submit">Registrar Médico</button>
+          <button type="button" onclick="window.location.href='/cancelar'">Cancelar</button>
+        </div>
+      </form>
+    </section>
+
+    <section>
+      <button onclick="window.location.href='/medicos-registro'">Ver Médicos Registrados</button>
+    </section>
+
+    <section>
+      <h2>Búsqueda de Médicos</h2>
+      <form action="/ubicacion-medicos" method="GET">
+        <div>
+          <label for="especialidad_search">Especialidad:</label>
+          <input type="text" id="especialidad_search" name="especialidad_search" required>
+        </div>
+        <button type="submit">Buscar</button>
+      </form>
+      <h2>Médicos Totales Registrados por Especialidad</h2>
+      <form action="/medicos-totales" method="GET">
+        <div>
+          <label for="especialidad_totales">Especialidad:</label>
+          <input type="text" id="especialidad_totales" name="especialidad_search" required>
+        </div>
+        <button type="submit">Buscar Totales</button>
+      </form>
+    </section>
+
+    <section>
+      <button onclick="window.location.href='/'">Volver</button>
+    </section>
+  </main>
+
+</body>
+</html>
