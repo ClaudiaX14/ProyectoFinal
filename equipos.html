@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equipos</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="navbar"></div>
+  <h1>Cargar Equipos desde Excel</h1>
+  <form action="/upload" method="POST" enctype="multipart/form-data">
+    <input type="file" name="excelFile" accept=".xlsx" />
+    <button type="submit">Subir Archivo</button>
+  </form>
+
+  <script src="navbar.html"></script>
+  <button onclick="window.location.href='/download'">Descargar Equipos</button>
+  <button onclick="window.location.href='/download-pdf'">Descargar Equipos en PDF</button>
+</body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar Columna de Equipos</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Eliminar Columna del Registro de Equipos Médicos</h1>
+    <form action="/eliminar-columna" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta columna?')">
+      <label for="columna">Nombre de la columna a eliminar:</label>
+      <input type="text" id="columna" name="columna" required>
+      <button type="submit">Eliminar Columna</button>
+  </form>  
+    <button onclick="window.location.href='/'">Volver</button>
+
+    <script>
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (event) => {
+            const columna = document.getElementById('columna').value;
+            if (!confirm(`¿Estás seguro de realizar esta accion?`)) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
