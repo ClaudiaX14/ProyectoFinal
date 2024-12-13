@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Registro de Médicos</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <link rel="stylesheet" href="/styles.css">
+
+  <h2>Editar Médico</h2>
+  <form id="buscarMedicoForm">
+    <label for="medicos-id">ID del Médico:</label>
+    <input type="number" id="medicos-id" required>
+    <button type="button" onclick="buscarMedico()">Buscar</button>
+  </form>
+  
+  <form id="editarMedicoForm" style="display: none;" method="POST" action="/editar-medicos">
+    <input type="hidden" id="medicos-id-hidden" name="id">
+    
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre" required>
+
+    <label for="especialidad">Especialidad:</label>
+    <input type="text" id="especialidad" name="especialidad" required>
+
+    <label for="departamento_id">Código de identificación del departamento:</label>
+    <input type="number" id="departamento_id" name="departamento_id" required>
+
+    <button type="submit">Guardar Cambios</button>
+    <button type="button" onclick="eliminarMedico()">Eliminar Médico</button>
+  </form>
+
+  <script>
+    function buscarMedico() {
+      const medicoId = document.getElementById('medicos-id').value;
+      fetch(`/obtener-medico/${medicoId}`)
+        .then(response => {
+          if (!response.ok) throw new Error('Médico no encontrado');
+          return response.json();
+        })
+        .then(data => {
+          document.getElementById('editarMedicoForm').style.display = 'block';
+          document.getElementById('medicos-id-hidden').value = data.id;
+          document.getElementById('nombre').value = data.nombre;
+          document.getElementById('especialidad').value = data.especialidad;
+          document.getElementById('departamento_id').value = data.departamento_id;
+        })
+        .catch(error => alert(error.message));
+    }
+
+    function eliminarMedico() {
+      const medicoId = document.getElementById('medicos-id-hidden').value;
+      if (confirm('¿Estás seguro de que deseas eliminar a este médico?')) {
+        fetch(`/eliminar-medico/${medicoId}`, {
+          method: 'DELETE'
+        })
+        .then(response => {
+          if (response.ok) {
+            alert('Médico eliminado correctamente.');
+            window.location.href = '/';
+          } else {
+            alert('Error al eliminar el médico.');
+          }
+        })
+        .catch(error => console.error('Error al eliminar el médico:', error));
+      }
+    }
+  </script>
+
+  <button onclick="window.location.href='/'">Volver</button>
+</body>
+</html>
