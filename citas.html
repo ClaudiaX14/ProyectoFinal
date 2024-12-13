@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro de Citas Médicas - Hospital de Los Ángeles</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Registro de Citas Médicas del Hospital de Los Ángeles</h1>
+  </header>
+
+  <main>
+    <section>
+      <h2>Registrar Nueva Cita</h2>
+      <form action="/citas" method="POST">
+        <div>
+          <label for="nombre_doc">Nombre del médico:</label>
+          <input type="text" id="nombre_doc" name="nombre_doc" required>
+        </div>
+
+        <div>
+          <label for="causa">Causa de la Cita:</label>
+          <input type="text" id="causa" name="causa" required>
+        </div>
+
+        <div>
+          <label for="fecha_programada">Fecha de programación:</label>
+          <input type="date" id="fecha_programada" name="fecha_programada" required>
+        </div>
+
+        <div>
+          <label for="departamento_id">Código de identificación del departamento:</label>
+          <input type="text" id="departamento_id" name="departamento_id" required>
+        </div>
+
+        <div class="buttons">
+          <button type="submit">Agendar Cita</button>
+        </div>
+      </form>
+    </section>
+
+    <section>
+      <button onclick="window.location.href='/citas-registro'">Ver Citas Agendadas</button>
+    </section>
+
+    <section>
+      <button onclick="window.location.href='/'">Volver</button>
+    </section>
+  </main>
+</body>
+</html>
