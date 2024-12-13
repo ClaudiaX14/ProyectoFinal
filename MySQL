@@ -741,4 +741,25 @@ mysql> CREATE VIEW vista_citas AS
     -> FROM citas
     -> JOIN departamentos ON citas.departamento_id = departamentos.id;
 Query OK, 0 rows affected (0.03 sec)
+mysql> SELECT * FROM vista_citas;
++-----------------------+-------------------------+------------------+------------------------------------+
+| nombre_doc            | causa                   | fecha_programada | ubicacion                          |
++-----------------------+-------------------------+------------------+------------------------------------+
+| Dr. Carlos Vera       | Dolor de garganta       | 2024-12-17       | Primer piso                        |
+| Dr. Kassandra Quezada | Dolor de muela          | 2024-12-14       | Segundo piso - Seccion verde menta |
+| Dr. Sonia Peréz       |  Prueba de Papanicolaou | 2024-12-18       | Segundo piso - Seccion rosa        |
++-----------------------+-------------------------+------------------+------------------------------------+
+3 rows in set (0.01 sec)
+
+mysql> SELECT * FROM citas;
++-----------------------+-------------------------+------------------+---------------------+-----------------+
+| nombre_doc            | causa                   | fecha_programada | fecha_registro      | departamento_id |
++-----------------------+-------------------------+------------------+---------------------+-----------------+
+| Dr. Carlos Vera       | Dolor de garganta       | 2024-12-17       | 2024-12-11 00:30:09 |               2 |
+| Dr. Kassandra Quezada | Dolor de muela          | 2024-12-14       | 2024-12-11 00:34:30 |               3 |
+| Dr. Sonia Peréz       |  Prueba de Papanicolaou | 2024-12-18       | 2024-12-11 00:37:27 |               4 |
++-----------------------+-------------------------+------------------+---------------------+-----------------+
+3 rows in set (0.00 sec)
+
+mysql>
 
