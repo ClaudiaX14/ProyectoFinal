@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Hospital de los Ángeles</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Bienvenido a la Gestión Hospitalaria</h1>
+        <p>Esta es una página básica para administrar y gestionar las áreas en el Hospital de los Ángeles.</p>
+    </header>
+
+    <!-- Barra de navegación -->
+    <nav id="navbar"></nav>
+    <script>
+        fetch('/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar').innerHTML = data;
+            })
+            .catch(error => console.error('Error cargando el navbar:', error));
+
+        fetch('/tipo-usuarios')
+            .then(response => response.json())
+            .then(data => {
+                const menu = document.getElementById('menu');
+                const tipoUsuarios = data.tipo_usuarios;
+
+                if (tipoUsuarios === 'admin') {
+                    menu.innerHTML += '<li><a href="/departamentos">Ver departamentos</a></li>';
+                    menu.innerHTML += '<li><a href="/medicos.html">Registro de Médicos</a></li>';
+                    menu.innerHTML += '<li><a href="/editar-medicos.html">Editar Médicos</a></li>';
+                    menu.innerHTML += '<li><a href="/busqueda.html">Búsqueda</a></li>';
+                    menu.innerHTML += '<li><a href="/equipos.html">Subir y Descargar</a></li>';
+                    menu.innerHTML += '<li><a href="/citas.html">Agendar citas</a></li>';
+                } else if (tipoUsuarios === 'medico') {
+                    menu.innerHTML += '<li><a href="/departamentos">Ver departamentos</a></li>';
+                    menu.innerHTML += '<li><a href="/equipos.html">Subir y Descargar</a></li>';
+                } else if (tipoUsuarios === 'enfermero') {
+                    menu.innerHTML += '<li><a href="/departamentos">Ver departamentos</a></li>';
+                    menu.innerHTML += '<li><a href="/ordenar-departamentos">Médicos por departamentos</a></li>';
+                    menu.innerHTML += '<li><a href="/medicos.html">Registro de Médicos</a></li>';
+                    menu.innerHTML += '<li><a href="/editar-medicos.html">Editar Pacientes</a></li>';
+                    menu.innerHTML += '<li><a href="/busqueda.html">Búsqueda</a></li>';
+                    menu.innerHTML += '<li><a href="/equipos.html">Subir y Descargar</a></li>';
+                    menu.innerHTML += '<li><a href="/citas.html">Agendar citas</a></li>';
+                }
+
+                menu.innerHTML += '<li><a href="/logout">Cerrar Sesión</a></li>';
+            })
+            .catch(error => console.error('Error obteniendo el tipo de usuario:', error));
+    </script>
+
+    <!-- Sección de Registro de Médicos -->
+    <section>
+        <h2>Registro de Médicos</h2>
+        <form action="/medicos" method="POST">
+            <div>
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+
+            <div>
+                <label for="especialidad">Especialidad:</label>
+                <input type="text" id="especialidad" name="especialidad" required>
+            </div>
+
+            <div>
+                <label for="departamento_id">Departamento ID:</label>
+                <input type="number" id="departamento_id" name="departamento_id" required>
+            </div>
+
+            <div class="buttons">
+                <button type="submit">Registrar Médico</button>
+                <button type="button" onclick="window.location.href='/cancelar'">Cancelar</button>
+            </div>
+        </form>
+
+        <button onclick="window.location.href='/departamentos'">Ver Médicos Registrados</button>
+    </section>
+</body>
+</html>
