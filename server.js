@@ -21,7 +21,24 @@ function requireRole(...roles) {
     if (req.session.user && roles.includes(req.session.user.tipo_usuarios)) { // Cambiar a tipo_usuario
       next();
     } else {
-      res.status(403).send('Acceso denegado');
+      res.status(403).send(`
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <link rel="stylesheet" href="/styles.css">
+          <title>Acceso Denegado</title>
+          </head>
+        <body>
+          <div class="container">
+            <h1>Acceso Denegado</h1>
+            <p>No tienes permisos para acceder a esta página.</p>
+          </div>
+        </body>
+        <button onclick="window.location.href='/'">Volver</button>
+        </html>
+      `);
     }
   };
 }
@@ -407,7 +424,7 @@ app.get('/citas-registro', requireLogin, requireRole('admin', 'enfermero'), (req
           </thead>
           <tbody>
     `;
-    
+
     results.forEach(cita => {
       html += `
         <tr>
