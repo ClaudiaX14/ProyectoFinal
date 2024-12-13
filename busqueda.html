@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Búsqueda en Tiempo Real</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="navbar"></div>
+  <h1>Búsqueda en Tiempo Real</h1>
+  <input type="text" id="search" placeholder="Buscar usuario..." />
+  <ul id="results"></ul>
+
+  <script src="navbar.html"></script>
+  <script>
+    document.getElementById('search').addEventListener('keyup', function() {
+      const query = this.value;
+      fetch(`/buscar?query=${query}`)
+        .then(res => res.json())
+        .then(data => {
+          const results = document.getElementById('results');
+          results.innerHTML = '';
+          data.forEach(medicos => {
+            const li = document.createElement('li');
+            li.textContent = `${medicos.nombre} (${medicos.especialidad})`;
+            results.appendChild(li);
+          });
+        });
+    });
+  </script>
+  <button onclick="window.location.href='/'">Volver</button>
+</body>
+</html>
