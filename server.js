@@ -349,7 +349,7 @@ app.get('/cancelar', requireLogin,requireRole('admin', 'enfermero'), (req, res) 
       <title>Registro de Medicos</title>
     </head>
     <body>
-      <h1>Contratacion Cancelada</h1>
+      <h1>Registro Cancelado</h1>
         <tbody>
   `;
 
