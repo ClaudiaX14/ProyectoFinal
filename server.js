@@ -269,7 +269,7 @@ app.post('/medicos', requireLogin, requireRole('admin','enfermero'), (req, res) 
 
   connection.query(query,[nombre, especialidad, departamento_id], (err, result) => {
     if (err) {
-      return res.send('Error al copturar médico.');
+      return res.send('Error al capturar médico.');
     }
     let html = `
     <html>
